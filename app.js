@@ -1,1 +1,4 @@
-const spotify = require('./src/Spotify')
+// const spotify = require('./src/Spotify')
+const app = require('./src/Cli')
+
+app()
