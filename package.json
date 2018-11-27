@@ -1,0 +1,14 @@
+{
+  "name": "pldl",
+  "version": "0.1.0",
+  "description": "Download playlist from spotify",
+  "main": "app.js",
+  "repository": "https://github.com/Ponicorn/pldl.git",
+  "author": "Ponicorn <tougrer@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
