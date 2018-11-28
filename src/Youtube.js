@@ -1,6 +1,8 @@
 const Youtube = require('simple-youtube-api')
 const ytdl = require('ytdl-core')
 const fs = require('fs')
+// const ffmpeg = require('ffmpeg')
+const ffmpeg = require('fluent-ffmpeg')
 const { ytkey } = require('../secret.json')
 const youtube = new Youtube(ytkey)
 
@@ -29,19 +31,37 @@ async function download (videoid, dlpath) {
   })
 }
 
-async function convert (path, name) {
-  let input = `${path}${name}.mp4`
-  let output = `${path}${name}.mp3`
+async function convert (path, track) {
+  let input = `${path}${track.namefile}.mp4`
+  let output = `${path}${track.namefile}.mp3`
+  
+  return new Promise((resolve, reject) => {
+    ffmpeg(input)
+      .outputOptions([
+        '-vn',
+        '-ar', 44100,
+        '-ac', 2,
+        '-ab', 192,
+        '-f', 'mp3',
+        // '-metadata', `TIT2=${track.name} `,
+        // '-metadata', `TPE1=${track.artist} `,
+        // '-metadata', `TALB=${track.album} `
+      ])
+      .on('error', reject)
+      .on('end', resolve)
+      .save(output)
+  })
 }
 
 async function downloadTracks (tracks) {
   for(let track of tracks) {
     let videoid = await search(track)
     if (!videoid) continue
-    let dlpath = `./download/${track.name}.mp4`
+    let dlpath = `./download/${track.namefile}.mp4`
     try {
       await download(videoid, dlpath)
-      await convert('./download/', track.name)
+      await convert('./download/', track)
+      fs.unlinkSync(`./download/${track.namefile}.mp4`)
       console.log(`${track.name} - downloaded`)
     } catch (e) {
       console.error(e)

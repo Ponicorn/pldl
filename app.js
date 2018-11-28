@@ -4,8 +4,12 @@ const yt = require('./src/Youtube')
 
 
 async function ohboi () {
-  let result = await yt.convert('./download/', 'test')
-  console.log(result)
+  try {
+    let result = await yt.convert('./download/', {name:'the animal', artist:'Steve Vai', album: 'long du zboob'})
+    console.log(result)
+  } catch(e) {
+    console.error(e)
+  }
 }
 
 app()

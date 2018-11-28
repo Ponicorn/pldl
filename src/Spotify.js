@@ -28,20 +28,21 @@ async function fetchPlaylistItems (playlistId) {
   try {
     items = await spotifyRequest(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`)
   } catch (e) {
-    // console.error(e)
+    console.error(e)
     return false
   }
 
   items = items.map(i => {
     return {
       name: i.track.name,
+      namefile: i.track.name.toLowerCase().split(' ').join(''),
+      // namefile: i.id,
       artist: i.track.artists.map(a => a.name).join(','),
       album: i.track.album.name,
       duration: Math.trunc(i.track.duration_ms / 1000),
       isrc: i.track.external_ids.isrc || null
     }
   })
-
   return items
 }
 
