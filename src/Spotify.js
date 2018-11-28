@@ -18,15 +18,29 @@ async function fetchPlaylists (username) {
   return playlists
 }
 
+/**
+ * Retourne les tracks d'une playlist
+ * @param {*} playlistId 
+ */
 async function fetchPlaylistItems (playlistId) {
   let items = []
 
   try {
     items = await spotifyRequest(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`)
   } catch (e) {
-    console.error(e)
+    // console.error(e)
     return false
   }
+
+  items = items.map(i => {
+    return {
+      name: i.track.name,
+      artist: i.track.artists.map(a => a.name).join(','),
+      album: i.track.album.name,
+      duration: i.track.duration_ms,
+      isrc: i.track.external_ids.isrc || null
+    }
+  })
 
   return items
 }
