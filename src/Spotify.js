@@ -37,7 +37,7 @@ async function fetchPlaylistItems (playlistId) {
       name: i.track.name,
       artist: i.track.artists.map(a => a.name).join(','),
       album: i.track.album.name,
-      duration: i.track.duration_ms,
+      duration: Math.trunc(i.track.duration_ms / 1000),
       isrc: i.track.external_ids.isrc || null
     }
   })

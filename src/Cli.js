@@ -3,6 +3,7 @@ const chalk = require('chalk')
 const figlet  = require('figlet')
 const prompts  = require('prompts')
 const spotify = require('./Spotify')
+const yt = require('./Youtube')
 
 async function app () {
   init()
@@ -15,8 +16,10 @@ async function app () {
 
   result = await askPlaylist(playlists)
   let playlist = result.playlist
-  
-  console.log('see ya')
+  let tracks = await spotify.fetchPlaylistItems(playlist)
+  let end = await yt.downloadTracks(tracks)
+
+  console.log(end)
 }
 
 function init () {
@@ -53,12 +56,12 @@ function askPlaylist (playlists) {
   })
 }
 
-// async function showTracks (playlist) {
-//   let songs = await spotify.fetchPlaylistItems(playlist)
-//   if (!songs || songs.length == 0) return console.log('Oops ! ça va pas le faire on dirait...')
-//   songs.forEach(s => {
-//     console.log(`${s.name} - ${s.artist}`)
-//   })
-// }
+async function showTracks (playlist) {
+  let songs = await spotify.fetchPlaylistItems(playlist)
+  if (!songs || songs.length == 0) return console.log('Oops ! ça va pas le faire on dirait...')
+  songs.forEach(s => {
+    console.log(s)
+  })
+}
 
 module.exports = app
