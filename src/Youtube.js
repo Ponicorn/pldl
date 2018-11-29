@@ -1,7 +1,7 @@
 const Youtube = require('simple-youtube-api')
 const ytdl = require('ytdl-core')
 const fs = require('fs')
-// const ffmpeg = require('ffmpeg')
+const rw = require('./Write')
 const ffmpeg = require('fluent-ffmpeg')
 const { ytkey } = require('../secret.json')
 const youtube = new Youtube(ytkey)
@@ -58,13 +58,14 @@ async function downloadTracks (downloadpath, tracks) {
     if (!videoid) continue
     let dlpath = `${downloadpath}${track.namefile}.mp4`
     try {
+      rw(`${track.name} : downloading...`)
       await download(videoid, dlpath)
+      rw(`${track.name} : converting to mp3...`)
       await convert(downloadpath, track)
+      rw(`${track.name} : downloaded !`, true)
       fs.unlinkSync(`${downloadpath}${track.namefile}.mp4`)
-      console.log(`${track.name} - downloaded`)
     } catch (e) {
       console.error(e)
-      console.log(`${track.name} - error`)
     }
   }
 }

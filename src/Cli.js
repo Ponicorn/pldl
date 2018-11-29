@@ -57,12 +57,4 @@ function askPlaylist (playlists) {
   })
 }
 
-async function showTracks (playlist) {
-  let songs = await spotify.fetchPlaylistItems(playlist)
-  if (!songs || songs.length == 0) return console.log('Oops ! ça va pas le faire on dirait...')
-  songs.forEach(s => {
-    console.log(s)
-  })
-}
-
 module.exports = app
