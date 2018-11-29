@@ -35,6 +35,8 @@ async function convert (path, track) {
   let input = `${path}${track.namefile}.mp4`
   let output = `${path}${track.namefile}.mp3`
   
+  if (fs.existsSync(output)) fs.unlinkSync(output)
+  
   return new Promise((resolve, reject) => {
     ffmpeg(input)
       .outputOptions([
@@ -42,10 +44,7 @@ async function convert (path, track) {
         '-ar', 44100,
         '-ac', 2,
         '-ab', 192,
-        '-f', 'mp3',
-        // '-metadata', `TIT2=${track.name} `,
-        // '-metadata', `TPE1=${track.artist} `,
-        // '-metadata', `TALB=${track.album} `
+        '-f', 'mp3'
       ])
       .on('error', reject)
       .on('end', resolve)
@@ -53,22 +52,21 @@ async function convert (path, track) {
   })
 }
 
-async function downloadTracks (tracks) {
+async function downloadTracks (downloadpath, tracks) {
   for(let track of tracks) {
     let videoid = await search(track)
     if (!videoid) continue
-    let dlpath = `./download/${track.namefile}.mp4`
+    let dlpath = `${downloadpath}${track.namefile}.mp4`
     try {
       await download(videoid, dlpath)
-      await convert('./download/', track)
-      fs.unlinkSync(`./download/${track.namefile}.mp4`)
+      await convert(downloadpath, track)
+      fs.unlinkSync(`${downloadpath}${track.namefile}.mp4`)
       console.log(`${track.name} - downloaded`)
     } catch (e) {
       console.error(e)
       console.log(`${track.name} - error`)
     }
   }
-  return 'q+'
 }
 
 module.exports = {

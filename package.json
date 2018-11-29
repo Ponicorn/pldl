@@ -10,6 +10,7 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.16",
     "chalk": "^2.4.1",
+    "ffmetadata": "^1.5.0",
     "ffmpeg": "^0.0.4",
     "figlet": "^1.2.1",
     "fluent-ffmpeg": "^2.1.2",

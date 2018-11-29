@@ -36,9 +36,9 @@ async function fetchPlaylistItems (playlistId) {
     return {
       name: i.track.name,
       namefile: i.track.name.toLowerCase().split(' ').join(''),
-      // namefile: i.id,
       artist: i.track.artists.map(a => a.name).join(','),
       album: i.track.album.name,
+      image: i.track.album.images[0].url || null,
       duration: Math.trunc(i.track.duration_ms / 1000),
       isrc: i.track.external_ids.isrc || null
     }

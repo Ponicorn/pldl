@@ -4,11 +4,12 @@ const figlet  = require('figlet')
 const prompts  = require('prompts')
 const spotify = require('./Spotify')
 const yt = require('./Youtube')
+const mt = require('./Metadata')
 
 async function app () {
   init()
   let result
-
+  let path = './download/'
   // Ask user name and fetch playlist
   result = await askUsername()
   let playlists = await spotify.fetchPlaylists(result.username)
@@ -17,9 +18,9 @@ async function app () {
   result = await askPlaylist(playlists)
   let playlist = result.playlist
   let tracks = await spotify.fetchPlaylistItems(playlist)
-  let end = await yt.downloadTracks(tracks)
-
-  console.log(end)
+  await yt.downloadTracks(path, tracks)
+  await mt.writeAll(path, tracks)
+  console.log('Bye !')
 }
 
 function init () {
