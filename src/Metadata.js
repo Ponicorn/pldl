@@ -12,10 +12,6 @@ async function write(path, track) {
       title: track.name
     }
 
-    let options = {
-      // attachments: [track.image]
-    }
-
     ffmetadata.write(file, data, options, (err) => {
       if (err) reject(err)
       resolve()
@@ -31,5 +27,6 @@ async function writeAll(path, tracks) {
 }
 
 module.exports = {
-  writeAll
+  writeAll,
+  write
 }

@@ -19,7 +19,6 @@ async function app () {
   let playlist = result.playlist
   let tracks = await spotify.fetchPlaylistItems(playlist)
   await yt.downloadTracks(path, tracks)
-  await mt.writeAll(path, tracks)
   console.log('Bye !')
 }
 
